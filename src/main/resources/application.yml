@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: ${JDBC_URL}
+    username: ${JDBC_USERNAME}
+    password: ${JDBC_PASSWORD}
+    driver-class-name: ${JDBC_DRIVER}
+  jooq:
+    sql-dialect: ${JOOQ_SQL_DIALECT}
