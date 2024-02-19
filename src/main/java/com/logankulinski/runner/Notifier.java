@@ -2,14 +2,20 @@ package com.logankulinski.runner;
 
 import com.logankulinski.jooq.Tables;
 import com.logankulinski.model.JhinPick;
+import discord4j.common.util.Snowflake;
+import discord4j.core.GatewayDiscordClient;
+import discord4j.core.event.domain.lifecycle.ReadyEvent;
+import discord4j.core.object.entity.channel.TextChannel;
 import org.jooq.DSLContext;
 import org.jooq.exception.DataAccessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Objects;
@@ -18,6 +24,10 @@ import java.util.Objects;
 public final class Notifier implements ApplicationRunner {
     private final DSLContext context;
 
+    private final GatewayDiscordClient client;
+
+    private final String channelId;
+
     private static final Logger LOGGER;
 
     static {
@@ -25,8 +35,13 @@ public final class Notifier implements ApplicationRunner {
     }
 
     @Autowired
-    public Notifier(DSLContext context) {
+    public Notifier(DSLContext context, GatewayDiscordClient client,
+        @Value("${discord.channel-id}") String channelId) {
         this.context = Objects.requireNonNull(context);
+
+        this.client = Objects.requireNonNull(client);
+
+        this.channelId = Objects.requireNonNull(channelId);
     }
 
 
@@ -50,6 +65,8 @@ public final class Notifier implements ApplicationRunner {
             return;
         }
 
-        picks.forEach(System.out::println);
+        for (JhinPick pick : picks) {
+            Snowflake snowflake = Snowflake.of(this.channelId);
+        }
     }
 }

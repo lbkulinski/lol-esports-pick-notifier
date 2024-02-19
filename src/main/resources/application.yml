@@ -6,3 +6,5 @@ spring:
     driver-class-name: ${JDBC_DRIVER}
   jooq:
     sql-dialect: ${JOOQ_SQL_DIALECT}
+discord:
+  channel-id: ${DISCORD_CHANNEL_ID}
