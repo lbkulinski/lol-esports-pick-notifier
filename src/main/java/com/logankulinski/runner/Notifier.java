@@ -17,6 +17,9 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,11 +47,7 @@ public final class Notifier implements ApplicationRunner {
         this.channelId = Objects.requireNonNull(channelId);
     }
 
-
-    @Override
-    public void run(ApplicationArguments args) {
-        Objects.requireNonNull(args);
-
+    private List<JhinPick> getPicks() {
         List<JhinPick> picks;
 
         try {
@@ -62,11 +61,66 @@ public final class Notifier implements ApplicationRunner {
 
             Notifier.LOGGER.error(message, e);
 
-            return;
+            return List.of();
         }
 
+        return picks;
+    }
+
+    private String getMessage(JhinPick pick) {
+        Objects.requireNonNull(pick);
+
+        String outcome = pick.won() ? "won" : "lost";
+
+        String player = pick.player();
+
+        String tournament = pick.tournament();
+
+        String message = "I %s a game played by %s at %s.".formatted(outcome, player, tournament);
+
+        String vod = pick.vod();
+
+        if (vod != null) {
+            message += " Check it out [here](%s)!".formatted(vod);
+        }
+
+        return message;
+    }
+
+    private void notify(JhinPick pick) {
+        Objects.requireNonNull(pick);
+
+        Snowflake snowflake = Snowflake.of(this.channelId);
+
+        String message = this.getMessage(pick);
+
+        this.client.getChannelById(snowflake)
+                   .ofType(TextChannel.class)
+                   .flatMap(channel -> channel.createMessage(message))
+                   .subscribe();
+
+        String gameId = pick.gameId();
+
+        try {
+            this.context.update(Tables.JHIN_PICKS)
+                        .set(Tables.JHIN_PICKS.NOTIFIED, true)
+                        .where(Tables.JHIN_PICKS.GAME_ID.eq(gameId))
+                        .execute();
+        } catch (DataAccessException e) {
+            String exceptionMessage = e.getMessage();
+
+            Notifier.LOGGER.error(exceptionMessage, e);
+        }
+    }
+
+    @Override
+    public void run(ApplicationArguments args) {
+        Objects.requireNonNull(args);
+
+        List<JhinPick> picks = this.getPicks();
+
         for (JhinPick pick : picks) {
-            Snowflake snowflake = Snowflake.of(this.channelId);
+            this.notify(pick);
         }
     }
 }
