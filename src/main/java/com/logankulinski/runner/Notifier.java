@@ -97,7 +97,7 @@ public final class Notifier implements ApplicationRunner {
         this.client.getChannelById(snowflake)
                    .ofType(TextChannel.class)
                    .flatMap(channel -> channel.createMessage(message))
-                   .subscribe();
+                   .block();
 
         String gameId = pick.gameId();
 
