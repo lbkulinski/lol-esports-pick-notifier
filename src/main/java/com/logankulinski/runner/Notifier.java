@@ -4,7 +4,7 @@ import com.logankulinski.jooq.Tables;
 import com.logankulinski.model.JhinPick;
 import discord4j.common.util.Snowflake;
 import discord4j.core.GatewayDiscordClient;
-import discord4j.core.event.domain.lifecycle.ReadyEvent;
+import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.channel.TextChannel;
 import org.jooq.DSLContext;
 import org.jooq.exception.DataAccessException;
@@ -15,11 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
 
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
@@ -67,7 +63,7 @@ public final class Notifier implements ApplicationRunner {
         return picks;
     }
 
-    private String getMessage(JhinPick pick) {
+    private String getMessageText(JhinPick pick) {
         Objects.requireNonNull(pick);
 
         String outcome = pick.won() ? "won" : "lost";
@@ -76,33 +72,74 @@ public final class Notifier implements ApplicationRunner {
 
         String tournament = pick.tournament();
 
-        String message = "I %s a game played by %s at %s.".formatted(outcome, player, tournament);
+        String messageText = "I %s a game played by %s at %s.".formatted(outcome, player, tournament);
 
         String vod = pick.vod();
 
         if (vod != null) {
-            message += " Check it out [here](%s)!".formatted(vod);
+            messageText += " Check it out [here](%s)!".formatted(vod);
         }
 
-        return message;
+        return messageText;
+    }
+
+    private String createMessage(JhinPick pick) {
+        Objects.requireNonNull(pick);
+
+        Snowflake channelSnowflake = Snowflake.of(this.channelId);
+
+        String messageText = this.getMessageText(pick);
+
+        Message message = this.client.getChannelById(channelSnowflake)
+                                     .ofType(TextChannel.class)
+                                     .flatMap(channel -> channel.createMessage(messageText))
+                                     .block();
+
+        String messageId = null;
+
+        if (message != null) {
+            messageId = message.getId()
+                               .asString();
+        }
+
+        return messageId;
+    }
+
+    private void updateMessage(JhinPick pick) {
+        Objects.requireNonNull(pick);
+
+        Snowflake channelSnowflake = Snowflake.of(this.channelId);
+
+        String messageId = pick.messageId();
+
+        Snowflake messageSnowflake = Snowflake.of(messageId);
+
+        this.client.getMessageById(channelSnowflake, messageSnowflake)
+                   .flatMap(message -> {
+                       String messageText = this.getMessageText(pick);
+
+                       return message.edit()
+                                     .withContentOrNull(messageText);
+                   })
+                   .block();
     }
 
     private void notify(JhinPick pick) {
         Objects.requireNonNull(pick);
 
-        Snowflake snowflake = Snowflake.of(this.channelId);
+        String messageId = pick.messageId();
 
-        String message = this.getMessage(pick);
-
-        this.client.getChannelById(snowflake)
-                   .ofType(TextChannel.class)
-                   .flatMap(channel -> channel.createMessage(message))
-                   .block();
+        if (messageId == null) {
+            messageId = this.createMessage(pick);
+        } else {
+            this.updateMessage(pick);
+        }
 
         String gameId = pick.gameId();
 
         try {
             this.context.update(Tables.JHIN_PICKS)
+                        .set(Tables.JHIN_PICKS.MESSAGE_ID, messageId)
                         .set(Tables.JHIN_PICKS.NOTIFIED, true)
                         .where(Tables.JHIN_PICKS.GAME_ID.eq(gameId))
                         .execute();

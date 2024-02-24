@@ -5,6 +5,8 @@ import java.time.Instant;
 public record JhinPick(
     String gameId,
 
+    String messageId,
+
     String player,
 
     String tournament,

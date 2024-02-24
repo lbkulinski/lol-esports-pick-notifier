@@ -10,7 +10,7 @@ import com.logankulinski.jooq.tables.JhinPicks;
 /**
  * Convenience access to all tables in esports_data.
  */
-@SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
+@SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class Tables {
 
     /**
