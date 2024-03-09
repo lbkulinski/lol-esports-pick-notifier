@@ -15,14 +15,14 @@ import org.jooq.impl.Internal;
 
 /**
  * A class modelling foreign key relationships and constraints of tables in
- * esports_data.
+ * public.
  */
-@SuppressWarnings({ "all", "unchecked", "rawtypes" })
+@SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class Keys {
 
     // -------------------------------------------------------------------------
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<JhinPicksRecord> KEY_JHIN_PICKS_PRIMARY = Internal.createUniqueKey(JhinPicks.JHIN_PICKS, DSL.name("KEY_jhin_picks_PRIMARY"), new TableField[] { JhinPicks.JHIN_PICKS.GAME_ID }, true);
+    public static final UniqueKey<JhinPicksRecord> JHIN_PICKS_PKEY = Internal.createUniqueKey(JhinPicks.JHIN_PICKS, DSL.name("jhin_picks_pkey"), new TableField[] { JhinPicks.JHIN_PICKS.GAME_ID }, true);
 }

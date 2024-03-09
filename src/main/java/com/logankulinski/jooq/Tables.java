@@ -8,13 +8,13 @@ import com.logankulinski.jooq.tables.JhinPicks;
 
 
 /**
- * Convenience access to all tables in esports_data.
+ * Convenience access to all tables in public.
  */
-@SuppressWarnings({ "all", "unchecked", "rawtypes" })
+@SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class Tables {
 
     /**
-     * The table <code>esports_data.jhin_picks</code>.
+     * The table <code>public.jhin_picks</code>.
      */
     public static final JhinPicks JHIN_PICKS = JhinPicks.JHIN_PICKS;
 }
