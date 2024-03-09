@@ -22,4 +22,5 @@ jobs:
           JDBC_PASSWORD: ${{ secrets.JDBC_PASSWORD }}
           JDBC_URL: ${{ secrets.JDBC_URL }}
           JDBC_USERNAME: ${{ secrets.JDBC_USERNAME }}
+          JOOQ_SQL_DIALECT: ${{ secrets.JOOQ_SQL_DIALECT }}
         run: mvn -B package --file pom.xml
