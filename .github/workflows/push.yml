@@ -1,0 +1,45 @@
+name: Jhin Pick Notifier CI
+on:
+  push:
+    branches: [ "main" ]
+jobs:
+  build:
+    name: Build with Maven
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+      - name: Setup JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+      - name: Build with Maven
+        env:
+          DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+          JDBC_DRIVER: ${{ secrets.JDBC_DRIVER }}
+          JDBC_PASSWORD: ${{ secrets.JDBC_PASSWORD }}
+          JDBC_URL: ${{ secrets.JDBC_URL }}
+          JDBC_USERNAME: ${{ secrets.JDBC_USERNAME }}
+        run: mvn -B package --file pom.xml
+  docker:
+    name: Push to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/jhin-pick-notifier:latest

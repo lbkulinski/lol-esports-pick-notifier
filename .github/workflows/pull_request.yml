@@ -1,0 +1,25 @@
+name: Jhin Pick Notifier PR CI
+on:
+  pull_request_target:
+    branches: [ "main" ]
+jobs:
+  build:
+    name: Build with Maven
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+      - name: Setup JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+      - name: Build with Maven
+        env:
+          DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+          JDBC_DRIVER: ${{ secrets.JDBC_DRIVER }}
+          JDBC_PASSWORD: ${{ secrets.JDBC_PASSWORD }}
+          JDBC_URL: ${{ secrets.JDBC_URL }}
+          JDBC_USERNAME: ${{ secrets.JDBC_USERNAME }}
+        run: mvn -B package --file pom.xml
