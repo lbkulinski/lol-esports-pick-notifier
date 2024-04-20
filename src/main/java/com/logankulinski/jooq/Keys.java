@@ -5,7 +5,9 @@ package com.logankulinski.jooq;
 
 
 import com.logankulinski.jooq.tables.JhinPicks;
+import com.logankulinski.jooq.tables.LucianPicks;
 import com.logankulinski.jooq.tables.records.JhinPicksRecord;
+import com.logankulinski.jooq.tables.records.LucianPicksRecord;
 
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
@@ -25,4 +27,5 @@ public class Keys {
     // -------------------------------------------------------------------------
 
     public static final UniqueKey<JhinPicksRecord> JHIN_PICKS_PKEY = Internal.createUniqueKey(JhinPicks.JHIN_PICKS, DSL.name("jhin_picks_pkey"), new TableField[] { JhinPicks.JHIN_PICKS.GAME_ID }, true);
+    public static final UniqueKey<LucianPicksRecord> LUCIAN_PICKS_PKEY = Internal.createUniqueKey(LucianPicks.LUCIAN_PICKS, DSL.name("lucian_picks_pkey"), new TableField[] { LucianPicks.LUCIAN_PICKS.GAME_ID }, true);
 }

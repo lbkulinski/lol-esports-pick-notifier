@@ -5,6 +5,7 @@ package com.logankulinski.jooq;
 
 
 import com.logankulinski.jooq.tables.JhinPicks;
+import com.logankulinski.jooq.tables.LucianPicks;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +34,11 @@ public class Public extends SchemaImpl {
     public final JhinPicks JHIN_PICKS = JhinPicks.JHIN_PICKS;
 
     /**
+     * The table <code>public.lucian_picks</code>.
+     */
+    public final LucianPicks LUCIAN_PICKS = LucianPicks.LUCIAN_PICKS;
+
+    /**
      * No further instances allowed
      */
     private Public() {
@@ -48,7 +54,8 @@ public class Public extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
-            JhinPicks.JHIN_PICKS
+            JhinPicks.JHIN_PICKS,
+            LucianPicks.LUCIAN_PICKS
         );
     }
 }
