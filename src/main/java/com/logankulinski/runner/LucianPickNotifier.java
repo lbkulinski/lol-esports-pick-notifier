@@ -95,5 +95,7 @@ public final class LucianPickNotifier implements ApplicationRunner {
         for (Pick pick : picks) {
             this.notify(pick);
         }
+
+        this.client.shutdown();
     }
 }
