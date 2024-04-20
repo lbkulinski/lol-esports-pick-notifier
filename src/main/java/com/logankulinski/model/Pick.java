@@ -2,7 +2,7 @@ package com.logankulinski.model;
 
 import java.time.Instant;
 
-public record JhinPick(
+public record Pick(
     String gameId,
 
     String messageId,
