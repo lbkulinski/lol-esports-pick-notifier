@@ -95,5 +95,7 @@ public final class JhinPickNotifier implements ApplicationRunner {
         for (Pick pick : picks) {
             this.notify(pick);
         }
+
+        this.client.shutdown();
     }
 }
