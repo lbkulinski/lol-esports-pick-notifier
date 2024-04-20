@@ -17,8 +17,8 @@ jobs:
       - name: Build with Maven
         env:
           DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
-          JHIN_DISCORD_TOKEN: ${{ secrets.JHIN_DISCORD_TOKEN }}
-          LUCIAN_DISCORD_TOKEN: ${{ secrets.LUCIAN_DISCORD_TOKEN }}
+          DISCORD_JHIN_TOKEN: ${{ secrets.DISCORD_JHIN_TOKEN }}
+          DISCORD_LUCIAN_TOKEN: ${{ secrets.DISCORD_LUCIAN_TOKEN }}
           JDBC_DRIVER: ${{ secrets.JDBC_DRIVER }}
           JDBC_PASSWORD: ${{ secrets.JDBC_PASSWORD }}
           JDBC_URL: ${{ secrets.JDBC_URL }}
