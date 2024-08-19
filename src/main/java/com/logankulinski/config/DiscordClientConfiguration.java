@@ -11,7 +11,7 @@ import java.util.Objects;
 @Configuration
 public class DiscordClientConfiguration {
     @Bean
-    public JDA jhinDiscordClient(@Value("${discord.jhin-token}") String token) throws InterruptedException {
+    public JDA jhinClient(@Value("${discord.jhin-token}") String token) throws InterruptedException {
         Objects.requireNonNull(token);
 
         JDA jda = JDABuilder.createDefault(token)
@@ -23,7 +23,7 @@ public class DiscordClientConfiguration {
     }
 
     @Bean
-    public JDA lucianDiscordClient(@Value("${discord.lucian-token}") String token) throws InterruptedException {
+    public JDA lucianClient(@Value("${discord.lucian-token}") String token) throws InterruptedException {
         Objects.requireNonNull(token);
 
         JDA jda = JDABuilder.createDefault(token)

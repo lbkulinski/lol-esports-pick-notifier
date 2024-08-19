@@ -4,8 +4,7 @@
 package com.logankulinski.jooq;
 
 
-import com.logankulinski.jooq.tables.JhinPicks;
-import com.logankulinski.jooq.tables.LucianPicks;
+import com.logankulinski.jooq.tables.EsportsPick;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,14 +28,9 @@ public class Public extends SchemaImpl {
     public static final Public PUBLIC = new Public();
 
     /**
-     * The table <code>public.jhin_picks</code>.
+     * The table <code>public.esports_pick</code>.
      */
-    public final JhinPicks JHIN_PICKS = JhinPicks.JHIN_PICKS;
-
-    /**
-     * The table <code>public.lucian_picks</code>.
-     */
-    public final LucianPicks LUCIAN_PICKS = LucianPicks.LUCIAN_PICKS;
+    public final EsportsPick ESPORTS_PICK = EsportsPick.ESPORTS_PICK;
 
     /**
      * No further instances allowed
@@ -54,8 +48,7 @@ public class Public extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
-            JhinPicks.JHIN_PICKS,
-            LucianPicks.LUCIAN_PICKS
+            EsportsPick.ESPORTS_PICK
         );
     }
 }
