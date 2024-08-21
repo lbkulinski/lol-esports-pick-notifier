@@ -7,6 +7,8 @@ public record Pick(
 
     String messageId,
 
+    Champion champion,
+
     String player,
 
     String tournament,

@@ -4,8 +4,7 @@
 package com.logankulinski.jooq;
 
 
-import com.logankulinski.jooq.tables.JhinPicks;
-import com.logankulinski.jooq.tables.LucianPicks;
+import com.logankulinski.jooq.tables.EsportsPick;
 
 
 /**
@@ -15,12 +14,7 @@ import com.logankulinski.jooq.tables.LucianPicks;
 public class Tables {
 
     /**
-     * The table <code>public.jhin_picks</code>.
+     * The table <code>public.esports_pick</code>.
      */
-    public static final JhinPicks JHIN_PICKS = JhinPicks.JHIN_PICKS;
-
-    /**
-     * The table <code>public.lucian_picks</code>.
-     */
-    public static final LucianPicks LUCIAN_PICKS = LucianPicks.LUCIAN_PICKS;
+    public static final EsportsPick ESPORTS_PICK = EsportsPick.ESPORTS_PICK;
 }

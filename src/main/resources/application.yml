@@ -10,3 +10,4 @@ discord:
   channel-id: ${DISCORD_CHANNEL_ID}
   jhin-token: ${DISCORD_JHIN_TOKEN}
   lucian-token: ${DISCORD_LUCIAN_TOKEN}
+  draven-token: ${DISCORD_DRAVEN_TOKEN}
