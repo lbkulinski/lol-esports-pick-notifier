@@ -1,36 +1,46 @@
 package com.logankulinski.config;
 
+import com.logankulinski.model.Champion;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
 import java.util.Objects;
 
 @Configuration
 public class DiscordClientConfiguration {
     @Bean
-    public JDA jhinClient(@Value("${discord.jhin-token}") String token) throws InterruptedException {
-        Objects.requireNonNull(token);
+    public Map<Champion, JDA> discordClients(@Value("${discord.jhin-token}") String jhinToken,
+        @Value("${discord.lucian-token}") String lucianToken,
+        @Value("${discord.draven-token}") String dravenToken) throws InterruptedException {
+        Objects.requireNonNull(jhinToken);
 
-        JDA jda = JDABuilder.createDefault(token)
-                            .build();
+        Objects.requireNonNull(lucianToken);
 
-        jda.awaitReady();
+        Objects.requireNonNull(dravenToken);
 
-        return jda;
-    }
+        JDA jhinClient = JDABuilder.createDefault(jhinToken)
+                                   .build();
 
-    @Bean
-    public JDA lucianClient(@Value("${discord.lucian-token}") String token) throws InterruptedException {
-        Objects.requireNonNull(token);
+        jhinClient.awaitReady();
 
-        JDA jda = JDABuilder.createDefault(token)
-                            .build();
+        JDA lucianClient = JDABuilder.createDefault(lucianToken)
+                                     .build();
 
-        jda.awaitReady();
+        lucianClient.awaitReady();
 
-        return jda;
+        JDA dravenClient = JDABuilder.createDefault(dravenToken)
+                                     .build();
+
+        dravenClient.awaitReady();
+
+        return Map.of(
+            Champion.JHIN, jhinClient,
+            Champion.LUCIAN, lucianClient,
+            Champion.DRAVEN, dravenClient
+        );
     }
 }
