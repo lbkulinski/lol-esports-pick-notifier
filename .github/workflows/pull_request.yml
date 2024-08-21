@@ -19,6 +19,7 @@ jobs:
           DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
           DISCORD_JHIN_TOKEN: ${{ secrets.DISCORD_JHIN_TOKEN }}
           DISCORD_LUCIAN_TOKEN: ${{ secrets.DISCORD_LUCIAN_TOKEN }}
+          DISCORD_DRAVEN_TOKEN: ${{ secrets.DISCORD_DRAVEN_TOKEN }}
           JDBC_DRIVER: ${{ secrets.JDBC_DRIVER }}
           JDBC_PASSWORD: ${{ secrets.JDBC_PASSWORD }}
           JDBC_URL: ${{ secrets.JDBC_URL }}
